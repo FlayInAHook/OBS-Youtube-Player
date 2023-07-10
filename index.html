@@ -95,10 +95,12 @@
 
           if (songID && listID) {
             debug("Given first video/song, playlist comes after");
-            player.cueVideoById({ videoId: songID });
-
+            //player.cueVideoById({ videoId: songID });
+            player.cuePlaylist({ list: listID });
             player.addEventListener("onStateChange", ({ data }) => {
+              console.log("on state changedddd", data)
               if (data === 0) {
+                console.log("on state change")
                 // Remark (HoPollo) : First video seems be played twice event without loop mode, quick fix is stopping and cue playlist to avoid that
                 player.stopVideo();
                 player.cuePlaylist({ list: listID });
@@ -117,6 +119,15 @@
             debug("Song only detected");
             player.cueVideoById({ videoId: songID });
           }
+
+          console.log(player.playerInfo)
+
+          player.loadPlaylist("PLdKEploj_VTJ7I9Xy5lJUkHpGPHsEG8lV")
+          player.playVideoAt(getRandomInt(player.playerInfo.playlist.length))
+        }
+
+        function getRandomInt(max) {
+          return Math.floor(Math.random() * Math.floor(max))
         }
 
         function onStateChange(event) {
